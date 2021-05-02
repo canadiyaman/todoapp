@@ -1,5 +1,5 @@
 # name of our workflow
-name: Todo App CI/CD Workflow
+name: Todo App Testing
 
 on:
   pull_request:
