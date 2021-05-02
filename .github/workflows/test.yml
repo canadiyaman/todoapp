@@ -1,5 +1,5 @@
 # name of our workflow
-name: Todo App Testing
+name: Backend App Test
 
 on:
   pull_request:
