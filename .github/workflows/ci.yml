@@ -18,28 +18,36 @@ env:
   IMAGE_NAME: image-todo
 
 jobs:
-  # Run tests.
-  # See also https://docs.docker.com/docker-hub/builds/automated-testing/
-  test:
+  health-check-job:
     runs-on: ubuntu-latest
-
+    env:
+      SECRET_KEY: FAKE_SECRET_KEY
+      DATABASE_URL: sqlite:///db.sqlite3
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Cache dependency
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/backend/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: Setup python environment
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Check Python version
+        run: python --version
+      - name: Install requirements
+        run: pip install -r backend/requirements.txt
+      - name: Run Migrations
+        run: python backend/manage.py migrate
+      - name: Run Tests
+        run: python backend/manage.py test core
 
-      - name: Run tests
-        run: |
-          if [ -f docker-compose.test.yml ]; then
-            docker-compose --file docker-compose.test.yml build
-            docker-compose --file docker-compose.test.yml run sut
-          else
-            docker build . --file Dockerfile
-          fi
-
-  # Push image to GitHub Packages.
-  # See also https://docs.docker.com/docker-hub/builds/
   push:
-    # Ensure test job passes before pushing image.
-    needs: test
+    needs: health-check-job
 
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
