@@ -1,4 +1,4 @@
-name: Docker
+name: CI/CD Process
 
 on:
   push:
@@ -12,6 +12,9 @@ on:
 
   # Run tests for any PRs.
   pull_request:
+
+    branches:
+      - main
 
 env:
   # TODO: Change variable to your image's name.

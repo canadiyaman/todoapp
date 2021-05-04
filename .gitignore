@@ -9,3 +9,9 @@ resource/
 
 frontend/package-lock.json
 frontend/node_modules
+# Log files
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/dist
