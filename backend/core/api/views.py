@@ -11,4 +11,4 @@ class TodoViewSet(viewsets.ModelViewSet):
         TodoViewSet provides enpoints for Todo datas.
     """
     serializer_class = TodoModelSerializer
-    queryset = Todo.objects.all()
+    queryset = Todo.objects.all().order_by('created_at')

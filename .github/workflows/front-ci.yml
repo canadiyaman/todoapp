@@ -1,5 +1,5 @@
 # name of our workflow
-name: Backend App Test
+name: FrontEnd App Test
 
 on:
   pull_request:
