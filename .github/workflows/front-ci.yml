@@ -1,39 +1,29 @@
-# name of our workflow
-name: FrontEnd App Test
+name: Frontend CI
 
 on:
-  pull_request:
+  push:
     branches:
       - main
-  push:
+  pull_request:
     branches:
       - main
 
 jobs:
-  health-check-job:
+  test:
+    strategy:
+      matrix:
+        node: [15]
     runs-on: ubuntu-latest
-    env:
-      SECRET_KEY: FAKE_SECRET_KEY
-      DATABASE_URL: sqlite:///db.sqlite3
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Cache dependency
-        uses: actions/cache@v2
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v2
         with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/backend/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-      - name: Setup python environment
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
-      - name: Check Python version
-        run: python --version
-      - name: Install requirements
-        run: pip install -r backend/requirements.txt
-      - name: Run Migrations
-        run: python backend/manage.py migrate
-      - name: Run Tests
-        run: python backend/manage.py test core
+          node-version: ${{ matrix.node }}
+
+      - name: Install Project Dependencies
+        run: npm install
+
+      - name: Test
+        run: npm run test

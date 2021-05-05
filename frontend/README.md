@@ -1,8 +1,8 @@
 # Todo-app frontend
 
-This project builded with vue.js It's a most basic todo app.
 
-## Project setup development with docker
+
+## Build and Start Backend Container
 ```
 docker-compose up
 ```
