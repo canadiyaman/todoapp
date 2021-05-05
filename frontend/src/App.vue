@@ -21,12 +21,12 @@ export default {
     }
   },
   created() {
-    axios.get("http://0.0.0.0:8000/api/todo/")
+    axios.get("http://35.233.8.56:80/api/todo/")
         .then(response => this.todos = response.data);
   },
   methods: {
     addTodo(newTodoObj) {
-      axios.post('http://0.0.0.0:8000/api/todo/', newTodoObj)
+      axios.post('http://35.233.8.56:80/api/todo/', newTodoObj)
           .then(res => {
               this.todos = [...this.todos, res.data];
           })
