@@ -1,5 +1,6 @@
 FROM python:3.9
 ENV PYTHONUNBUFFERED 1
+ENV DATABASE_URL sqlite:///db.sqlite3
 RUN apt-get update && apt-get install
 
 WORKDIR /code
