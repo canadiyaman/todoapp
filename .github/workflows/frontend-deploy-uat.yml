@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/${{ secrets.GCLOUD_FRONTEND_UAT_APP_NAME }}
+      VUE_APP_BASEURL: http://34.76.81.235/
+      VUE_APP_TITLE: UAT Application
     steps:
 
       - name: Login

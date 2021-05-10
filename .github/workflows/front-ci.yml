@@ -1,4 +1,5 @@
-name: Frontend CI
+name: Frontend Build And Unit Tests
+
 
 on:
   push:
