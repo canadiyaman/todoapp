@@ -15,6 +15,7 @@ on:
 
 jobs:
   health-check-job:
+    name: Run backend unit tests
     runs-on: ubuntu-latest
     env:
       SECRET_KEY: FAKE_SECRET_KEY
