@@ -1,15 +1,11 @@
-name: Backend CI
+name: Backend Build And Unit Tests
 
 on:
   push:
     branches:
       - main
 
-    tags:
-      - v*
-
   pull_request:
-
     branches:
       - main
 
