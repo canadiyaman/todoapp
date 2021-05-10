@@ -1,18 +1,38 @@
-name: Build An Image for Backend Application
+name: Build An Image and Push to Google cloud
 
 on:
   workflow_dispatch:
 
 jobs:
-  build-image-and-push:
+  deploy:
+    name: Setup Gcloud Account
     runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/${{ secrets.GCLOUD_BACKEND_PROD_APP_NAME }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
-        with:
-          gcloud_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }}
-          registry: gcr.io
-          project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
-          image_name: backend-image
-          dockerfile: ./backend/Dockerfile
 
+      - name: Login
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          GCP_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
+          service_account_email: ${{ secrets.GCLOUD_EMAIL }}
+          service_account_key: ${{ secrets.GCLOUD_CREDENTIALS }}
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker --quiet
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker Image
+        working-directory: ./backend
+        run: docker build . -t $IMAGE_NAME
+
+      - name: Test Docker Image
+        run: docker run $IMAGE_NAME sh -c "python manage.py test core"
+
+      - name: Push Docker Image
+        run: docker push $IMAGE_NAME
+
+      # - name: Deploy Docker image
+      #  run: gcloud run deploy ${{ secrets.GCLOUD_PROJECT_ID }} --image $IMAGE_NAME --region europe-west3 --platform managed
