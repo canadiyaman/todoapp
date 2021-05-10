@@ -32,4 +32,4 @@ jobs:
         run: docker push $IMAGE_NAME
 
       - name: Deploy Docker Image
-        run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --region europe-west1-d --platform managed
+        run: gcloud run deploy ${{ secrets.GCLOUD_SERVICE_NAME }} --image $IMAGE_NAME --region europe-west1-d --cluster ${{ secrets.GCLOUD_PROD_CLUSTER_NAME }}
