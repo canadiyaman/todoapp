@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/${{ secrets.GCLOUD_BACKEND_PROD_APP_NAME }}
+      DATABASE_URL: sqlite:///db.sqlite3
+      SECRET_KEY: FAKE_SECRET_KEY
     steps:
 
       - name: Login
@@ -32,4 +34,4 @@ jobs:
         run: docker push $IMAGE_NAME
 
       - name: Deploy Docker Image
-        run: gcloud run deploy ${{ secrets.GCLOUD_SERVICE_NAME }} --image $IMAGE_NAME --region europe-west1-d --cluster ${{ secrets.GCLOUD_PROD_CLUSTER_NAME }}
+        run: gcloud run deploy ${{ secrets.GCLOUD_BACKEND_PROD_APP_NAME }} --image $IMAGE_NAME --region europe-west1 --platform managed
