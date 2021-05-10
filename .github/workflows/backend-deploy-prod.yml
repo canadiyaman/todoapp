@@ -1,4 +1,4 @@
-name: Build An Image and Push to Google cloud
+name: Backend Deploy2Prod
 
 on:
   workflow_dispatch:
@@ -27,9 +27,6 @@ jobs:
       - name: Build Docker Image
         working-directory: ./backend
         run: docker build . -t $IMAGE_NAME
-
-      # - name: Test Docker Image
-      # run: docker run $IMAGE_NAME sh -c "cp .env-example .env && python manage.py test core"
 
       - name: Push Docker Image
         run: docker push $IMAGE_NAME
