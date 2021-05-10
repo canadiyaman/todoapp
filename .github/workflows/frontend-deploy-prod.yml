@@ -1,4 +1,4 @@
-name: Backend Deploy2Prod
+name: Frontend Build Image for Prod
 
 on:
   workflow_dispatch:
@@ -8,9 +8,7 @@ jobs:
     name: Setup Gcloud Account
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/${{ secrets.GCLOUD_BACKEND_PROD_APP_NAME }}
-      DATABASE_URL: sqlite:///db.sqlite3
-      SECRET_KEY: FAKE_SECRET_KEY
+      IMAGE_NAME: gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/${{ secrets.GCLOUD_FRONTEND_PROD_APP_NAME }}
     steps:
 
       - name: Login
@@ -27,11 +25,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build Docker Image
-        working-directory: ./backend
+        working-directory: ./frontend
         run: docker build . -t $IMAGE_NAME
 
       - name: Push Docker Image
         run: docker push $IMAGE_NAME
-
-      #- name: Deploy Docker Image
-      #  run: gcloud run deploy ${{ secrets.GCLOUD_BACKEND_PROD_APP_NAME }} --image $IMAGE_NAME --region europe-west1 --platform managed
