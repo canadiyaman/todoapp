@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "logrocket-vuex": "^0.0.3",
     "ts-jest": "^26.5.5",
     "uuid": "^3.4.0",
     "vue": "^3.0.0"
